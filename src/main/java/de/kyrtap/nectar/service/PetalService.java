@@ -29,4 +29,18 @@ public class PetalService {
     public void deleteById(Long id) {
         petalRepository.deleteById(id);
     }
+
+    public Petal createPetalForOwner(String ownerUsername, String name) {
+        // TODO: Check if ownerUsername owns a flower, create petal in that flower
+        return null;
+    }
+
+    public Petal renamePetalForOwner(Long petalId, String ownerUsername, String newName) {
+        // TODO: Check if ownerUsername owns the flower containing the petal, then rename
+        return null;
+    }
+
+    public void deletePetalForOwner(Long petalId, String ownerUsername) {
+        // TODO: Check if ownerUsername owns the flower containing the petal, then delete
+    }
 } 

@@ -2,9 +2,13 @@ package de.kyrtap.nectar.controller;
 
 import de.kyrtap.nectar.model.Petal;
 import de.kyrtap.nectar.service.PetalService;
+import de.kyrtap.nectar.dto.PetalNameRequest;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/petals")
@@ -26,12 +30,19 @@ public class PetalController {
     }
 
     @PostMapping
-    public Petal createPetal(@RequestBody Petal petal) {
-        return petalService.save(petal);
+    public Petal createPetal(@AuthenticationPrincipal User user, @Valid @RequestBody PetalNameRequest request) {
+        // TODO: Only allow if user owns the flower
+        return null;
     }
 
-    @DeleteMapping("/{id}")
-    public void deletePetal(@PathVariable Long id) {
-        petalService.deleteById(id);
+    @PutMapping("/{petalId}")
+    public Petal renamePetal(@PathVariable Long petalId, @AuthenticationPrincipal User user, @Valid @RequestBody PetalNameRequest request) {
+        // TODO: Only allow if user owns the flower
+        return null;
+    }
+
+    @DeleteMapping("/{petalId}")
+    public void deletePetal(@PathVariable Long petalId, @AuthenticationPrincipal User user) {
+        // TODO: Only allow if user owns the flower
     }
 } 
