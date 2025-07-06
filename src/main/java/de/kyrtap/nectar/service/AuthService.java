@@ -37,7 +37,13 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        // TODO: Implement login logic
-        return null;
+        Bee bee = beeRepository.findByUsername(request.getUsernameOrEmail())
+                .or(() -> beeRepository.findByEmail(request.getUsernameOrEmail()))
+                .orElseThrow(() -> new RuntimeException("Invalid username/email or password"));
+        if (!passwordEncoder.matches(request.getPassword(), bee.getPassword())) {
+            throw new RuntimeException("Invalid username/email or password");
+        }
+        String token = jwtUtil.generateToken(bee);
+        return new AuthResponse(token, bee.getUsername(), bee.getDisplayName());
     }
 } 
