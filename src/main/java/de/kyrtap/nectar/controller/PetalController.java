@@ -31,18 +31,16 @@ public class PetalController {
 
     @PostMapping
     public Petal createPetal(@AuthenticationPrincipal User user, @Valid @RequestBody PetalNameRequest request) {
-        // TODO: Only allow if user owns the flower
-        return null;
+        return petalService.createPetalForOwner(user.getUsername(), request.getName());
     }
 
     @PutMapping("/{petalId}")
     public Petal renamePetal(@PathVariable Long petalId, @AuthenticationPrincipal User user, @Valid @RequestBody PetalNameRequest request) {
-        // TODO: Only allow if user owns the flower
-        return null;
+        return petalService.renamePetalForOwner(petalId, user.getUsername(), request.getName());
     }
 
     @DeleteMapping("/{petalId}")
     public void deletePetal(@PathVariable Long petalId, @AuthenticationPrincipal User user) {
-        // TODO: Only allow if user owns the flower
+        petalService.deletePetalForOwner(petalId, user.getUsername());
     }
 } 

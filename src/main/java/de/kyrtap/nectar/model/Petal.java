@@ -32,4 +32,16 @@ public class Petal {
 
     @ManyToMany(mappedBy = "petals")
     private Set<Buzz> buzzes = new HashSet<>();
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setFlower(Flower flower) {
+        this.flower = flower;
+    }
+
+    public Flower getFlower() {
+        return flower;
+    }
 } 

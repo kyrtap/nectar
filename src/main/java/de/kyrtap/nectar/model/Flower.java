@@ -17,5 +17,7 @@ public class Flower {
     @OneToMany(mappedBy = "flower", cascade = CascadeType.ALL)
     private Set<Petal> petals = new HashSet<>();
 
-    // Getters and setters omitted for brevity
+    public Bee getBee() {
+        return bee;
+    }
 } 
