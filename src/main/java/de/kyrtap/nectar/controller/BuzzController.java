@@ -34,4 +34,9 @@ public class BuzzController {
     public void deleteBuzz(@PathVariable Long id) {
         buzzService.deleteById(id);
     }
+
+    @GetMapping("/petal/{petalId}")
+    public List<Buzz> getBuzzesByPetal(@PathVariable Long petalId) {
+        return buzzService.findByPetalId(petalId);
+    }
 } 

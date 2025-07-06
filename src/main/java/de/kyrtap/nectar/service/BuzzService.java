@@ -29,4 +29,8 @@ public class BuzzService {
     public void deleteById(Long id) {
         buzzRepository.deleteById(id);
     }
+
+    public List<Buzz> findByPetalId(Long petalId) {
+        return buzzRepository.findByPetals_Id(petalId);
+    }
 } 
