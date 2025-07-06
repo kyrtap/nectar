@@ -15,17 +15,30 @@ public class JwtUtil {
     private final long jwtExpirationMs = 86400000; // 1 day
 
     public String generateToken(Bee bee) {
-        // TODO: Implement token generation
-        return null;
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
+        return Jwts.builder()
+                .setSubject(bee.getUsername())
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
+                .compact();
     }
 
     public boolean validateToken(String token) {
-        // TODO: Implement token validation
-        return false;
+        try {
+            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
     }
 
     public String getUsernameFromToken(String token) {
-        // TODO: Extract username from token
-        return null;
+        Claims claims = Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody();
+        return claims.getSubject();
     }
 } 

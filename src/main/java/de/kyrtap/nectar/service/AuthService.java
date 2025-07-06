@@ -3,13 +3,37 @@ package de.kyrtap.nectar.service;
 import de.kyrtap.nectar.dto.RegistrationRequest;
 import de.kyrtap.nectar.dto.LoginRequest;
 import de.kyrtap.nectar.dto.AuthResponse;
+import de.kyrtap.nectar.model.Bee;
+import de.kyrtap.nectar.repo.BeeRepository;
+import de.kyrtap.nectar.util.JwtUtil;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
+    private final BeeRepository beeRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
+
+    public AuthService(BeeRepository beeRepository, BCryptPasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+        this.beeRepository = beeRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtUtil = jwtUtil;
+    }
+
     public AuthResponse register(RegistrationRequest request) {
-        // TODO: Implement registration logic
-        return null;
+        if (beeRepository.findByUsername(request.getUsername()).isPresent() ||
+            beeRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new RuntimeException("Username or email already exists");
+        }
+        Bee bee = new Bee();
+        bee.setUsername(request.getUsername());
+        bee.setEmail(request.getEmail());
+        bee.setPassword(passwordEncoder.encode(request.getPassword()));
+        bee.setDisplayName(request.getDisplayName());
+        beeRepository.save(bee);
+        String token = jwtUtil.generateToken(bee);
+        return new AuthResponse(token, bee.getUsername(), bee.getDisplayName());
     }
 
     public AuthResponse login(LoginRequest request) {
