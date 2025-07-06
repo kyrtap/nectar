@@ -20,4 +20,8 @@ public class Flower {
     public Bee getBee() {
         return bee;
     }
+
+    public void setBee(Bee bee) {
+        this.bee = bee;
+    }
 } 

@@ -4,7 +4,9 @@ import de.kyrtap.nectar.dto.RegistrationRequest;
 import de.kyrtap.nectar.dto.LoginRequest;
 import de.kyrtap.nectar.dto.AuthResponse;
 import de.kyrtap.nectar.model.Bee;
+import de.kyrtap.nectar.model.Flower;
 import de.kyrtap.nectar.repo.BeeRepository;
+import de.kyrtap.nectar.repo.FlowerRepository;
 import de.kyrtap.nectar.util.JwtUtil;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,11 +16,13 @@ public class AuthService {
     private final BeeRepository beeRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+    private final FlowerRepository flowerRepository;
 
-    public AuthService(BeeRepository beeRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public AuthService(BeeRepository beeRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, FlowerRepository flowerRepository) {
         this.beeRepository = beeRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
+        this.flowerRepository = flowerRepository;
     }
 
     public AuthResponse register(RegistrationRequest request) {
@@ -32,6 +36,9 @@ public class AuthService {
         bee.setPassword(passwordEncoder.encode(request.getPassword()));
         bee.setDisplayName(request.getDisplayName());
         beeRepository.save(bee);
+        Flower flower = new Flower();
+        flower.setBee(bee);
+        flowerRepository.save(flower);
         String token = jwtUtil.generateToken(bee);
         return new AuthResponse(token, bee.getUsername(), bee.getDisplayName());
     }
