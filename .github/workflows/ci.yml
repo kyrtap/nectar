@@ -22,14 +22,25 @@ jobs:
     - name: Build with Maven
       run: mvn clean package -DskipTests
 
+    - name: Upload JAR as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: nectar-jar
+        path: target/nectar-0.0.1-SNAPSHOT.jar
+
+    - name: Download JAR artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: nectar-jar
+        path: target/
+
     - name: Build Docker image
       run: docker build -t nectar-backend:latest .
 
-    # Optionally, push to Docker Hub or GitHub Container Registry
-    # - name: Log in to Docker Hub
-    #   uses: docker/login-action@v3
-    #   with:
-    #     username: ${{ secrets.DOCKER_USERNAME }}
-    #     password: ${{ secrets.DOCKER_PASSWORD }}
-    # - name: Push image
-    #   run: docker push your-dockerhub-username/nectar-backend:latest 
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Push image
+      run: docker push your-dockerhub-username/nectar-backend:latest 
