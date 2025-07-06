@@ -1,4 +1,4 @@
-package de.kyrtap.nectar;
+package de.kyrtap.nectar.model;
 
 import jakarta.persistence.*;
 import java.time.Instant;
