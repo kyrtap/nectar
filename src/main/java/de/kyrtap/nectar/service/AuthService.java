@@ -6,16 +6,16 @@ import de.kyrtap.nectar.dto.AuthResponse;
 import de.kyrtap.nectar.model.Bee;
 import de.kyrtap.nectar.repo.BeeRepository;
 import de.kyrtap.nectar.util.JwtUtil;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
     private final BeeRepository beeRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public AuthService(BeeRepository beeRepository, BCryptPasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public AuthService(BeeRepository beeRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.beeRepository = beeRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
